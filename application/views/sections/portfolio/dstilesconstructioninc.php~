@@ -1,0 +1,64 @@
+<?php $item = $portfolio['dstilesconstructioninc']; ?>
+<div class="portfolio-item-contents">
+	<ul class="nav nav-tabs" role="tablist">
+	  <li class="active"><a href="#overview" data-href="#overview">Overview</a></li>
+	  <li><a href="#screenshots" data-href="#screenshots">Screenshots</a></li>
+	</ul>
+	<a class="closeThis" href="#portfolio">
+		<button class="btn btn-primary">
+			<span class="glyphicon glyphicon-remove"></span>
+			Close
+		</button>
+	</a>
+	<div class="tab-content">
+	  <div class="tab-pane active clearfix" id="overview">
+	  	<div class="portfolio-item-img col-sm-4">
+	  		<a href="<?php echo $item['link']; ?>" target="_blank"><img src="<?php echo $item['img']; ?>" /></a>	
+	  	</div>
+	  	<div class="portfolio-item-content col-sm-8">
+	  		<h2><?php echo $item['title']; ?></h2>
+	  		<h4>Completed in August 2014 | <a href="<?php echo $item['link']; ?>" target="_blank"><?php echo $item['link']; ?></a></h4>
+	  		<p>
+	  			This is actually my Dad's website who owns a construction business. He needed a simple, one-page website that 
+	  			emphasizes the experience and services his company provides. Another important factor was enabling potential customers with a quick 
+	  			and easy way to contact him.
+	  		</p><p>
+	  			Outside of the images, social media icons, and google maps; the look and feel was accomplished with 
+	  			straight HTML5 and CSS. The image carousel at the top was achieved with the jQuery bxSlider plug-in. 
+	  			The backend was coded in PHP which also handles the contact form submission.
+	  		</p>
+	  		<h3>Technical Details</h3>
+	  		<ul>
+	  			<li><b>Back-End:</b> 
+	  				<ul>
+	  					<li>PHP</li>
+	  				</ul>
+	  			</li>
+	  			<li><b>Front-End:</b>
+	  				<ul>
+	  					<li>HTML5</li>
+	  					<li>CSS3</li>
+	  					<li>JavaScript</li>
+	  				</ul>
+	  			</li>
+	  			<li><b>Tools:</b>
+	  				<ul>
+	  					<li><a href="http://bxslider.com/" target="_blank">jQuery bxSlider</a></li>
+	  				</ul>
+	  			</li>
+	  		</ul>
+	  	</div>
+	  </div>
+	  <div class="tab-pane" id="screenshots">
+	  	<ul class="grid-list clearfix">
+			<?php
+			$img_dir = $item['img_dir'];
+			
+			foreach($item['imgs'] as $img) {
+				?><li><a href="<?php echo $img_dir . "/$img"; ?>" target="_blank"><img src="<?php echo $img_dir . "/$img"; ?>" /></a></li><?php
+			}
+			?>
+		</ul>
+	  </div>
+	</div>
+</div>

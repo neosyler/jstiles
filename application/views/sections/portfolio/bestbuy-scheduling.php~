@@ -1,0 +1,66 @@
+<?php $item = $portfolio['bestbuy-scheduling']; ?>
+<div class="portfolio-item-contents">
+	<ul class="nav nav-tabs" role="tablist">
+	  <li class="active"><a href="#overview" data-href="#overview">Overview</a></li>
+	  <li><a href="#screenshots" data-href="#screenshots">Screenshots</a></li>
+	</ul>
+	<a class="closeThis" href="#portfolio">
+		<button class="btn btn-primary">
+			<span class="glyphicon glyphicon-remove"></span>
+			Close
+		</button>
+	</a>
+	<div class="tab-content">
+	  <div class="tab-pane active clearfix" id="overview">
+	  	<div class="portfolio-item-img col-sm-4">
+	  		<a href="<?php echo $item['link']; ?>" target="_blank"><img src="<?php echo $item['img']; ?>" /></a>	
+	  	</div>
+	  	<div class="portfolio-item-content col-sm-8">
+	  		<h2><?php echo $item['title']; ?></h2>
+	  		<h4>Completed in January 2012 | <a href="<?php echo $item['link']; ?>" target="_blank"><?php echo $item['link']; ?></a></h4>
+	  		<p>
+	  			During my time at Systems In Motion, I was involved in several projects. One of these projects was to develop a 
+	  			customer-facing appointment scheduling application. This app enables customers to schedule appointments to pick up 
+	  			their product at the nearest Best Buy store. In addition to being customer-facing, it also had an Administrative Control Panel that 
+	  			enabled Store Managers and Store Employees to configure stores and products in the system, along with fulfilling appointments at the store.
+	  		</p><p>
+	  			I held the Lead Developer position for the duration of the first phase of this project before moving into management. In the second phase of this project, 
+	  			the business wanted to make the site work better on mobile phones so I created a responsive solution which automatically detected the screen size of the client machine/device, 
+	  			and updated the styling automatically. 
+	  		</p>
+	  		<h3>Technical Details</h3>
+	  		<ul>
+	  			<li><b>Back-End:</b> 
+	  				<ul>
+	  					<li>PHP</li>
+	  				</ul>
+	  			</li>
+	  			<li><b>Front-End:</b>
+	  				<ul>
+	  					<li>HTML</li>
+	  					<li>CSS</li>
+	  					<li>JavaScript</li>
+	  					<li>jQuery</li>
+	  				</ul>
+	  			</li>
+	  			<li><b>Frameworks:</b>
+	  				<ul>
+	  					<li><a href="http://ellislab.com/codeigniter" target="_blank">CodeIgniter</a></li>
+	  				</ul>
+	  			</li>
+	  		</ul>
+	  	</div>
+	  </div>
+	  <div class="tab-pane clearfix" id="screenshots">
+	  	<ul class="grid-list clearfix">
+			<?php
+			$img_dir = $item['img_dir'];
+			
+			foreach($item['imgs'] as $img) {
+				?><li><a href="<?php echo $img_dir . "/$img"; ?>" target="_blank"><img src="<?php echo $img_dir . "/$img"; ?>" /></a></li><?php
+			}
+			?>
+		</ul>
+	  </div>
+	</div>
+</div>

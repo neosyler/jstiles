@@ -1,0 +1,59 @@
+function changeHash(hash) {
+	if (location.hash != '') {
+		var id = location.hash,
+			jId = $(id),
+			jIdParent = $(id).data('parent'),
+			tabId = (jIdParent != undefined) ? jIdParent : id;
+	
+		$('.page:visible').slideUp(300);
+		jId.slideDown(300);
+		
+		window.scrollTo(0, 0);
+		$(window).one( 'scroll', function(){
+			window.scrollTo(0, 0);
+		});
+		
+		$('header nav ul li').removeClass('active');
+		$("header nav ul li a[href='" + tabId + "']").parent().addClass('active');
+	}
+}
+
+$(document).ready(function() {
+
+	//Listen for when the hash changes (i.e. back button pressed)
+	$(window).on('hashchange', function() {
+		changeHash(location.hash);
+	});
+	
+	//Tag Selector on Portfolio page
+	$('#portfolio-details ul.filter li button').click(function() {
+		var tag = $(this).data('tag');
+		
+		$('.portfolio-item:hidden').filter('.' + tag).fadeIn('fast');
+		$('.portfolio-item:visible').not('.' + tag).fadeOut('fast');
+	});
+	
+	//Tab switcher for Portfolio Items
+	$('.portfolio-item-contents .nav li a').on('click', function() {
+		$(this).parents('ul').find('li').removeClass('active');
+		$(this).parent().addClass('active');
+		var contents = $(this).parents('.portfolio-item-contents');
+		var id = $(this).data('href');
+		
+		contents.find('.tab-pane:visible').slideUp(300);
+		contents.find(id).slideDown(300);
+			
+		return false;
+	});
+	
+	//Sets the appropriate tab to display according to the has in the URL
+	if (location.hash != '' && location.hash != '#profile') {
+		changeHash(location.hash);
+	}	
+	
+	$('.screenshots .grid-list').magnificPopup({
+	  delegate: 'a',
+	  type: 'image',
+	  gallery: {enabled: true}
+	});
+});
