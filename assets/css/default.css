@@ -23,6 +23,25 @@ a:hover {
 	color: #bed13f;
 }
 
+article a,
+a.link,
+.pagination > li > a { 
+	color: #98aa20;	
+	font-weight: bold;
+}
+
+article a:hover,
+a.link:hover,
+.pagination > li > a:hover {
+	color: #bed13f;
+}
+
+h2 a,
+h4 a {
+	color: #000000;
+}
+
+
 img { max-width: 100%; }
 
 h1 {
@@ -98,7 +117,7 @@ h3 {
 .clearfix { display: inline-block; }
 /* start commented backslash hack \*/
 * html .clearfix { height: 1%; }
-.clearfix { display: block; }
+.clearfix { display: block; clear:both; }
 
 /** Layout */
 
@@ -156,6 +175,8 @@ header .profile-social-info,
 	width: 300px;
 }
 
+#stack { display: none; }
+
 #topbar nav ul > li {
 	cursor: pointer;
 	float: left;	
@@ -175,7 +196,7 @@ header .profile-social-info,
 }
 
 #inner-body {
-	padding: 100px 0px 60px 0px;
+	padding: 60px 0px 60px 0px;
 	position: relative;
 }
 
@@ -256,6 +277,12 @@ header .profile-social-info ul > li {
 	width: 39px;
 }
 
+header .profile-social-info ul > li a {
+	display: block;
+	height: 100%;
+	width: 100%;
+}
+
 header .profile-social-info ul > li.social {
 	background: transparent url('/assets/css/images/social-icons.png') no-repeat;
 }
@@ -290,7 +317,46 @@ footer {
 	border-radius: 0 0 6px 6px;
 	border-top: 5px solid #bed13f;
 	clear: both;
-	height: 90px;
+	color: #A1A0A0;
+}
+
+footer .col-md-4 {
+	padding: 10px 10px;
+}
+
+footer .copyright {
+	border-top: 1px solid #bed13f;
+	padding: 10px 10px;
+}
+
+footer h3,
+footer h4 a {
+	color: #C7C7C7;
+}
+
+footer h3 {
+	color: #bed13f;
+	font-size: 1.5em; 
+}
+
+footer ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+footer ul li {
+	list-style-type: none;
+	padding: 10px 10px;
+}
+
+footer ul.menu li {	
+	border-top: 1px solid #bed13f;
+}
+
+footer ul li a,
+footer ul li a:visited {
+	color: #c7c7c7;
 }
 
 /** Profile Page */
@@ -416,12 +482,14 @@ footer {
 /** Apps Page */
 
 #apps,
-#css-sprite-generator { 
+#css-sprite-generator,
+#blogpost { 
 	background: #fff;
 	padding: 20px 20px;
 }
 
-#css-sprite-generator .closeThis { float: right; }
+#css-sprite-generator .closeThis,
+#blogpost .closeThis { float: right; }
 
 /** CV Page */
 
@@ -457,6 +525,77 @@ ul.accordion h4 {
 	font-size: 16px;
 }
 
+/** Blog Page */
+
+#blog {
+	background: #eee;
+}
+
+#blog .col-md-8 {	
+	background: #FFF;
+}
+
+.post-content {
+	margin: 10px 0px;
+}
+
+.post-details, .category-list {
+	border: 1px solid #e6e6e6;
+	border-left: 0;
+	border-right: 0;
+	list-style-type: none;
+	margin: 15px 0 0 0;
+	padding: 6px 0 6px 0;
+}
+
+.post-details li {
+	display: inline-block;
+	list-style-type: none;
+	margin: 2px 20px 2px 0;
+	padding: 0;
+}
+
+.categories {
+	padding: 0 10px;
+}
+
+.category-list li {
+	background: #bed13f;
+	border: 1px solid #909090;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	color: #5b5b5b;
+	display: inline-block;
+	font-weight: bold;
+	list-style-type: none;
+	margin: 3px 3px;;
+	padding: 5px 5px;
+}
+
+.category-list li:hover {
+	background: #dbec6a;
+	border: 1px solid #000;
+	color: #000;
+	cursor: pointer;
+}
+
+.date { 
+	color: #98aa20;
+	font-style: italic;
+}
+
+/** Blog Post Detail */
+#blogpost h2 {
+	margin: 5px 0px;
+	font-size: 2.5em;
+	float: left;
+}
+
+#blogpost .post-content h2 {	
+	float: none;
+	font-size: 1.5em;
+}
 
 /** Contacts Page */
 
@@ -483,5 +622,25 @@ ul.accordion h4 {
 }
 
 /** Overrides */
-
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {	
+	#stack { display: block; }
+	
+	header nav {
+		background: #414141;
+		display: none;
+		left: 0px;
+		position: fixed;
+		top: 40px;
+		z-index: 1000;
+		width: 100%;
+	}
+	
+	header nav ul li {
+		clear: both;
+		padding-left: 20px;
+		text-align: left;
+		width: 100%;
+	}
+}
 

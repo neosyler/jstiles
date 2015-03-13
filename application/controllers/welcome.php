@@ -17,7 +17,7 @@ class Welcome extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index($sprite_info = null)
+	public function index($sprite_info = null, $hash = "")
 	{
 		$this->load->helper('directory');
 		
@@ -90,7 +90,65 @@ class Welcome extends CI_Controller {
 			)
 		);
 		
+		$data['page'] = 1;
+		$data['posts'] = $this->getPosts();
+		$data['latest_posts'] = $this->getLatestPosts();
+		$data['category'] = "";
+		$data['post_count'] = $this->countPosts();
+		$data['categories'] = $this->getCategories();
+		
+		if ($hash) {
+			$data['hash'] = $hash;
+		}
+		
 		$this->load->view('master', $data);
+	}
+	
+	public function blog($hash) {
+		$this->index(null, "blogpost/$hash");
+	}
+	
+	public function contact() {
+		$name = $this->input->post('name');
+		$email = $this->input->post('email');
+		$subject = $this->input->post('subject');
+		$phone = $this->input->post('phone');
+		$msg = $this->input->post('message');
+		
+		$message = "A new Contact Form Submission was submitted by $name:<br /><br />$msg<br /><br />";
+		$message .= "Submitted by: $name<br />Email: $email<br />Phone #: $phone";
+		
+		$this->load->library('email');
+		
+		$this->email->from($email);
+		$this->email->to('neosyler@gmail.com');
+		$this->email->subject("Contact Form Submission: " . $subject);
+		$this->email->message($message);
+		$this->email->set_newline("\r\n");
+		$this->email->send();
+		
+		echo "<div class='alert alert-success' role='alert'><b>Thank You</b> for your email!</div>";
+	}
+	
+	private function countPosts($category = "") {
+		$this->db->select("count(*) as 'count'");
+		$this->db->from("js_blog");
+		
+		if ($category != "") {
+			$this->db->join("js_tags", "js_blog.id=js_tags.reference");
+			$this->db->where("tag", $category);
+		}
+		
+		$this->db->order_by("js_blog.created","desc");
+		
+		$query = $this->db->get();
+		
+		if ($query->num_rows() > 0) {
+			$row = $query->row_array();
+			return $row['count'];
+		} 
+		
+		return 0;
 	}
 	
 	public function generate() {
@@ -140,6 +198,116 @@ class Welcome extends CI_Controller {
 			}
 		} else {
 			$this->index(array());
+		}
+	}
+	
+	private function getCategories() {
+		$cats = array();
+		
+		$this->db->select("count(*) as 'rows',tag");
+		$this->db->from("js_tags");
+		$this->db->group_by("tag");
+		$this->db->order_by("tag","asc");
+		
+		$query = $this->db->get();
+		
+		if ($query->num_rows() > 0) {
+			foreach($query->result_array() as $row) {
+				$cats[] = $row;
+			}
+		} 
+		
+		return $cats;
+	}
+	
+	private function getLatestPosts() {		
+		$posts = array();
+		
+		$this->db->select("js_blog.id,title,description,content,js_blog.created");
+		$this->db->from("js_blog");
+		
+		$this->db->order_by("created","desc");
+		$this->db->limit(3, 0);
+		
+		$query = $this->db->get();
+		
+		if ($query->num_rows() > 0) {
+			foreach($query->result_array() as $row) {
+				$posts[] = $row;
+			}
+		} 
+		
+		return $posts;
+	}
+	
+	private function getPosts($page = 1, $category = "") {
+		$limit = 5;
+		$limit_start = ($page-1) * $limit;
+		
+		$posts = array();
+		
+		$this->db->select("js_blog.id,title,description,content,js_blog.created");
+		$this->db->from("js_blog");
+		
+		if ($category != "") {
+			$this->db->join("js_tags", "js_blog.id=js_tags.reference");
+			$this->db->where("tag", $category);
+		}
+		
+		$this->db->order_by("created","desc");
+		$this->db->limit($limit, $limit_start);
+		
+		$query = $this->db->get();
+		
+		if ($query->num_rows() > 0) {
+			foreach($query->result_array() as $row) {
+				$posts[] = $row;
+			}
+		} 
+		
+		return $posts;
+	}
+	
+	public function hash($hash) {
+		$this->index(null, $hash);
+	}
+	
+	public function loadBlogPage($page, $category = "") {
+		$data['page'] = $page;
+		$data['category'] = $category;
+		$data['posts'] = $this->getPosts($page, $category);
+		$data['latest_posts'] = $this->getLatestPosts();
+		$data['post_count'] = $this->countPosts($category);
+		$data['categories'] = $this->getCategories();
+		
+		$this->load->view('sections/blog', $data);
+	}
+	
+	public function post($title, $return = false) {
+		$title = urldecode($title);
+		$title = str_replace(" ", "%", $title);
+		$title = str_replace("-", "%", $title);
+		
+		$this->db->select("*");
+		$this->db->from("js_blog");
+		$this->db->where('title like', $title);
+		
+		$query = $this->db->get();
+		
+		if ($query->num_rows() > 0) {
+			$json = $query->row_array();
+			$json['date'] = date("F jS, Y", strtotime($json['created']));
+			$json['content'] = stripslashes($json['content']);
+		} else {
+			$json = array(
+				'result' => 'Error'
+			);
+		}
+		
+		if ($return) {
+			return json_encode($json);
+		} else {
+			echo json_encode($json);
 		}
 	}
 }

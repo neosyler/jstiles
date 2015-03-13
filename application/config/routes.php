@@ -42,6 +42,8 @@ $route['default_controller'] = "welcome";
 $route['404_override'] = '';
 
 $route['generate'] = "welcome/generate";
+$route['Blog/(:any)'] = "welcome/blog/"."$1";
+$route['Applications/CSS-Image-Sprite-Generator'] = "welcome/hash/#css-sprite-generator";
 
 
 /* End of file routes.php */

@@ -29,7 +29,7 @@
 	</div>
 	<div class="contact-form col-md-8">
 		<h3>Send Me a Message</h3>
-		<form id="contact-form" action="contact" method="POST" role="form" class="form">
+		<form id="contactForm" action="contact" method="POST" role="form" class="form" onsubmit="return submitContactForm(this);">
 			<div class="row">
 				<div class="col-sm-6">
 					<p>
@@ -62,7 +62,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-sm-6">
+				<div class="col-sm-6 result">
 					
 				</div>
 				<div class="submit col-sm-6">

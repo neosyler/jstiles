@@ -14,7 +14,7 @@ function changeHash(hash) {
 		});
 		
 		$('header nav ul li').removeClass('active');
-		$("header nav ul li a[href='" + tabId + "']").parent().addClass('active');
+		$("header nav ul li a[href='/" + tabId + "']").parent().addClass('active');
 	}
 }
 
@@ -51,9 +51,15 @@ $(document).ready(function() {
 		changeHash(location.hash);
 	}	
 	
+	//displays screenshots in gallery
 	$('.screenshots .grid-list').magnificPopup({
 	  delegate: 'a',
 	  type: 'image',
 	  gallery: {enabled: true}
+	});
+	
+	$('#cv-details .accordion button').on('click', function() {
+		$(this).find('span').toggleClass('glyphicon-plus').toggleClass('glyphicon-minus');
+		$(this).parents('.accordion-item').find('.accordion-content').slideToggle('fast');
 	});
 });

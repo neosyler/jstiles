@@ -63,6 +63,10 @@ h3 {
 	font-size: 1.3em;	
 }
 
+.progress-bar {
+	background: #bed13f;
+}
+
 .btn-primary { 
 	background-color: #bed13f;
 	border: 0;
@@ -345,10 +349,6 @@ footer {
 	margin-top: 14px;
 }
 
-#profile-details .progress-bar {
-	background: #bed13f;
-}
-
 /** Portfolio Page */
 
 #portfolio ul.filter li {
@@ -424,6 +424,39 @@ footer {
 #css-sprite-generator .closeThis { float: right; }
 
 /** CV Page */
+
+#cv-details {
+	background: #FFF;
+	clear: both;
+	padding: 20px 20px;
+}
+
+ul.accordion {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;	
+}
+
+ul.accordion button {
+	left: 0;
+	position: absolute;
+	top: 0;
+}
+
+ul.accordion li.accordion-item {
+	list-style-type: none;
+	position: relative;
+	padding-left: 60px;
+}
+
+ul.accordion div.accordion-content {
+	display: none;
+}
+
+ul.accordion h4 {
+	font-size: 16px;
+}
+
 
 /** Contacts Page */
 

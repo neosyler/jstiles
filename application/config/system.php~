@@ -1,7 +1,7 @@
 <?php
 // System Config
 $config['system']['title'] = "Technical Delivery Manager & UI/UX Specialist";
-$config['system']['description'] = "I am a Technical Delivery Manager and Web Application Developer specializing in user-centric design and development.";
+$config['system']['description'] = "Web Application Developer specializing in Front-End Development";
 $config['system']['author'] = "Jason T. Stiles";
 $config['system']['email'] = "neosyler@gmail.com";
 

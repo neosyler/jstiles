@@ -1,9 +1,24 @@
 function changeHash(hash) {
 	if (location.hash != '') {
 		var id = location.hash,
-			jId = $(id),
-			jIdParent = $(id).data('parent'),
-			tabId = (jIdParent != undefined) ? jIdParent : id;
+			jId = null,
+			jIdParent = null,
+			tabId = null,
+			post = null,
+			postId = null;
+		
+		if (id.indexOf('/') > -1) {
+			//blog post
+			post = id.split('/');
+			id = post[0];
+			jId = $(id);
+			postId = post[1];
+		} else {
+			jId = $(id);
+		}
+		
+		jIdParent = jId.data('parent');
+		tabId = (jIdParent != undefined) ? jIdParent : id;
 	
 		$('.page:visible').slideUp(300);
 		jId.slideDown(300);
@@ -15,7 +30,50 @@ function changeHash(hash) {
 		
 		$('header nav ul li').removeClass('active');
 		$("header nav ul li a[href='/" + tabId + "']").parent().addClass('active');
+		
+		if (post != null) {
+			getPost(postId);
+		}
 	}
+}
+
+function getPost(id) {
+	$.ajax({
+		url: '/welcome/post/' + id,
+		type:'GET',
+		cache: false,
+		dataType: 'json',
+		success: function(response) {
+			var post = $('#blogpost');
+			
+			post.find('h2.title').text(response.title);
+			post.find('li.date').text(response.date);
+			post.find('.post-content').html(response.content);
+		}
+	});
+}
+
+function loadBlogPage(pageId, category) {
+	$.ajax({
+		url: '/welcome/loadBlogPage/' + pageId + "/" + category,
+		type:'GET',
+		cache: false,
+		dataType: 'html',
+		success: function(response) {
+			$('#blog').html(response);
+		}
+	});
+	
+	return false;
+}
+
+function submitContactForm(el) {
+	$.ajax({type:'POST', url: '/welcome/contact', data: $('#contactForm').serialize(), success: function(response) {
+		$('#contactForm').find('.result').html(response);
+		$('#contactForm').find('.result').effect('highlight', 'slow');
+	}});
+	
+	return false;
 }
 
 $(document).ready(function() {
@@ -23,6 +81,13 @@ $(document).ready(function() {
 	//Listen for when the hash changes (i.e. back button pressed)
 	$(window).on('hashchange', function() {
 		changeHash(location.hash);
+	});
+	
+	//Tab Handler
+	$('#inner-body nav ul li a').click(function() {
+		if ($('#stack').is(':visible')) {
+			$('#inner-body nav').slideToggle('fast');
+		}
 	});
 	
 	//Tag Selector on Portfolio page

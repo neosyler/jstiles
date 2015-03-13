@@ -17,22 +17,26 @@ class Welcome extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index()
+	public function index($sprite_info = null)
 	{
 		$this->load->helper('directory');
 		
 		$data = $this->config->item('system');
 		
+		if ($sprite_info != null && is_array($sprite_info)) {
+			$data['sprite_info'] = $sprite_info;
+		}
+		
 		$data['portfolio'] = array(
 			'dstilesconstructioninc' => array(
 				'href' => '#dstilesconstructioninc',
-				'img' => '/portfolio/D. Stiles Construction Inc/D. Stiles Construction Inc.png',
+				'img' => '/portfolio/D Stiles Construction Inc/D Stiles Construction Inc.png',
 				'title' => 'D. Stiles Construction, Inc.',
 				'desc' => 'Single page design using HTML5, CSS, JavaScript and the jQuery BX-Slider Plug-in.',
 				'tags' => 'design development',
 				'link' => 'http://www.stilesconstructioninc.com',
-				'img_dir' => '/portfolio/D. Stiles Construction Inc',
-				'imgs' => directory_map(FCPATH . '/portfolio/D. Stiles Construction Inc')
+				'img_dir' => '/portfolio/D Stiles Construction Inc',
+				'imgs' => directory_map(FCPATH . '/portfolio/D Stiles Construction Inc')
 			),
 			'iridescentmoments' => array(
 				'href' => '#iridescentmoments',
@@ -87,6 +91,56 @@ class Welcome extends CI_Controller {
 		);
 		
 		$this->load->view('master', $data);
+	}
+	
+	public function generate() {
+		$config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'zip';
+		$config['max_size']	= '2048';
+		$config['max_width'] = '0';
+		$config['max_height'] = '0';
+		
+		$this->load->library('upload', $config);
+		$this->load->helper('directory');
+		$this->load->model('SpriteGenerator', 'SpriteGenerator');
+		$post = $this->input->post();
+		
+		$result = $this->upload->do_upload('zipFile');
+		
+		if ($result) {
+			$result = $this->upload->data();
+			$full_path = $result['full_path'];
+			$file_name = $result['file_name'];
+			
+			$zip = new ZipArchive();
+			$result = $zip->open($full_path);
+			$ts = strtotime('now');
+			$output_path = "./temp/$ts/".$post['prefix']."sprite";
+			$basename = substr($file_name, 0, strrpos($file_name, "."));
+			mkdir("./temp/$ts", 0777);
+			
+			if ($result) {
+				$zip->extractTO("./temp/$ts/$basename/");
+				$zip->close();
+				
+				unlink("./uploads/$file_name");
+				
+				$map = directory_map("./temp/$ts/$basename/");
+				
+				$this->SpriteGenerator->init("./temp/$ts/$basename", $output_path, $post['format'], $post['direction'], $post['padding']);
+				$images = $this->SpriteGenerator->generate();
+				$this->index(array(
+					'name' => $post['prefix']."sprite.".$post['format'],
+					'path' => substr($output_path, 1) . "." . $post['format'],
+					'size' => round(filesize($output_path.".".$post['format'])/1024),
+					'images' => $images
+				));
+			} else {
+				$this->index(array(), "./temp/$ts/".$post['prefix']."sprite.".$post['format']);
+			}
+		} else {
+			$this->index(array());
+		}
 	}
 }
 
